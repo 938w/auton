@@ -58,9 +58,9 @@ auto driveTrain = okapi::ChassisControllerBuilder()
 					  .withDimensions(AbstractMotor::gearset::motor280, {{4_in, 10_in}, imev5GreenTPR})
 					  // pid
 					  .withGains(
-						  {0.00055, 0, 0.0000034}, // Distance controller gains
+						  {0.00052, 0.000014, 0.000028}, // Distance controller gains [devartive make more wobble] [integral make it autocorrect to point faster]
 						  {0.0015, 0, 0.0001},	   // Turn controller gains
-						  {0.0001, 0, 0.0000}	   // Angle controller gains (helps drive straight)
+						  {0.0005, 0, 0.0000}	   // Angle controller gains (helps drive straight)
 						  )
 					  // can add rotation sensor and encoder here
 					  .withSensors(
@@ -70,7 +70,7 @@ auto driveTrain = okapi::ChassisControllerBuilder()
 					  //   // specify the tracking wheels diameter (2.75 in), track (7 in), and TPR (360)
 					  //   // specify the middle encoder distance (2/25 in) and diameter (3.25 in)
 					  //   //.withOdometry({{2.75_in, 7_in}, quadEncoderTPR})
-					  .withOdometry({{2.75_in, 9.8_in, -2.25_in, 3.25_in}, quadEncoderTPR})
+					  .withOdometry({{2.75_in, 9.75_in, -2.25_in, 3.25_in}, quadEncoderTPR})
 					  .buildOdometry();
 
 /**
@@ -199,16 +199,19 @@ void opcontrol()
 	leftEncoder->reset();
 	rightEncoder->reset();
 	middleEncoder->reset();
-	driveTrain->setState({11.5_in, 26.75_in, -90_deg});
+	driveTrain->setState({12_in, 108_in, 0_deg});
 
 	// start your oauton code here
-	std::cout << "I am runnning!!! \n";
-	
-	 driveTrain->driveToPoint({11.5_in, 31.5_in}, true);
 
-	mogoMech.set_value(false);
-	driveTrain->driveToPoint({66_in, 36_in});
+	pros::delay(0);
+	driveTrain->driveToPoint({36_in, 108_in});/*
+	driveTrain->turnToPoint({36_in, 0_in});
+	 driveTrain->driveToPoint({36_in, 120_in}, true);
+	 mogoMech.set_value(false);
+	driveTrain->driveToPoint({36_in, 108_in});
+	driveTrain->driveToPoint({72_in, 108_in});
 	fourbarClamp.set_value(false);
+	driveTrain->driveToPoint({12_in, 108_in}, true);*/
 
 	
 	
@@ -223,7 +226,7 @@ void opcontrol()
 	while (true)
 	{
 		// tank drive
-		driveTrain->getModel()->tank(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y), master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y));
+		
 
 		// 4bar
 
