@@ -60,14 +60,7 @@ static constexpr std::int32_t imev5RedTPR = 1800;
 /**
  * The ticks per rotation of the V5 motor with a green gearset.
  */
-static constexpr std::int32_t imev5GreenTPR = 900;
-
-/**
- * 
- * 280 RPM
- * 
- */
-static constexpr std::int32_t imev5280MotorTPR = imev5GreenTPR * (20/28);
+static constexpr std::int32_t imev5GreenTPR = 900 * (20/28); // 6 motor, we only use green with drive train anyway
 
 /**
  * The ticks per rotation of the V5 motor with a blue gearset.
