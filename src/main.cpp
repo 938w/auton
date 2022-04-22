@@ -58,9 +58,11 @@ auto driveTrain = okapi::ChassisControllerBuilder()
 					  .withDimensions(AbstractMotor::gearset::motor280, {{4_in, 10_in}, imev5GreenTPR})
 					  // pid
 					  .withGains(
-						  {0.00052, 0.000014, 0.000028}, // Distance controller gains [devartive make more wobble] [integral make it autocorrect to point faster]
+						  //used to be 0.000715 for p
+						  // used to be 0.00000055 for d
+						  {0.00055, 0.00015, 0.00000055}, // Distance controller gains [derivative make more wobble] [integral make it autocorrect to point faster]
 						  {0.0015, 0, 0.0001},	   // Turn controller gains
-						  {0.0005, 0, 0.0000}	   // Angle controller gains (helps drive straight)
+						  {0.000, 0, 0.0000}	   // Angle controller gains (helps drive straight)
 						  )
 					  // can add rotation sensor and encoder here
 					  .withSensors(
@@ -204,7 +206,9 @@ void opcontrol()
 	// start your oauton code here
 
 	pros::delay(0);
-	driveTrain->driveToPoint({36_in, 108_in});/*
+
+	driveTrain->driveToPoint({36_in, 108_in});
+	/*driveTrain->driveToPoint({36_in, 108_in});/*
 	driveTrain->turnToPoint({36_in, 0_in});
 	 driveTrain->driveToPoint({36_in, 120_in}, true);
 	 mogoMech.set_value(false);
