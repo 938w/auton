@@ -69,19 +69,12 @@ auto driveTrain = okapi::ChassisControllerBuilder()
 						  )
 					  // pid
 					  .withGains(
-<<<<<<< HEAD
 						  //used to be 0.000715 for p
 						  // used to be 0.00000055 for d
 						  // used to be{0.0008, 0.0002, 0.0000005}
 						  {0.001, 0.00015, 0.00000064}, // Distance controller gains [derivative make more wobble] [integral make it autocorrect to point faster]
 						  {0.0015, 0, 0.0001},	   // Turn controller gains
 						  {0.000, 0, 0.0000}	   // Angle controller gains (helps drive straight)
-=======
-						  // without the I and D, 0.00064 works for p
-						  {0.000515, 0, 0},	   // Distance controller gains [devartive make more wobble] [integral make it autocorrect to point faster]
-						  {0.0015, 0, 0.0001}, // Turn controller gains
-						  {0, 0, 0.0000}	   // Angle controller gains (helps drive straight)
->>>>>>> b5b595ee9675d50db1cf4c68d71a52d5163426c2
 						  )
 					  // can add rotation sensor and encoder here
 					  .withSensors(
