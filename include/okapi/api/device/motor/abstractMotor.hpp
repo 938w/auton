@@ -37,7 +37,7 @@ class AbstractMotor : public ControllerOutput<double> {
    */
   enum class gearset {
     red = 100,   ///< 36:1, 100 RPM, Red gear set
-    green = 280, ///< 18:1, 200 RPM, Green gear set // 6 motor gearing
+    green = 200, ///< 18:1, 200 RPM, Green gear set // 6 motor gearing
     blue = 600,  ///< 6:1,  600 RPM, Blue gear set
     invalid = INT32_MAX
   };

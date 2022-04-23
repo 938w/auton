@@ -52,9 +52,6 @@ std::shared_ptr<ContinuousRotarySensor> leftEncoder = std::make_shared<ADIEncode
 std::shared_ptr<ContinuousRotarySensor> rightEncoder = std::make_shared<ADIEncoder>('E', 'F', true);
 std::shared_ptr<ContinuousRotarySensor> middleEncoder = std::make_shared<RotationSensor>(20, true);
 
-// Odom Debug
-OdomDebug modom(lv_scr_act(), LV_COLOR_ORANGE);
-
 // drivetrain can be used in both drive control and auton
 // http://thepilons.ca/wp-content/uploads/2018/10/Tracking.pdf
 // https://github.com/nickmertin/5225A-2017-2018
@@ -64,19 +61,19 @@ auto driveTrain = okapi::ChassisControllerBuilder()
 					  // Green gearset, 4 inch wheel diameter, 10 inch wheel track
 					  .withDimensions(AbstractMotor::gearset::green, {{4_in, 10_in}, imev5GreenTPR})
 					  // filter
-					  .withDerivativeFilters(
-						  std::make_unique<AverageFilter<3>>() // Distance controller filter
-						  )
+					  //   .withDerivativeFilters(
+					  // 	  std::make_unique<AverageFilter<3>>() // Distance controller filter
+					  // 	  )
 					  // pid
 					  .withGains(
-						  //used to be 0.000715 for p
-						  // used to be 0.00000055 for d
-						  // used to be{0.0008, 0.0002, 0.0000005}
-						  {0.001, 0.00015, 0.00000064}, // Distance controller gains [derivative make more wobble] [integral make it autocorrect to point faster]
-						  {0.0015, 0, 0.0001},	   // Turn controller gains
-						  {0.000, 0, 0.0000}	   // Angle controller gains (helps drive straight)
-						  )
-					  // can add rotation sensor and encoder here
+						  // used to be 0.000715 for p
+						  //  used to be 0.00000055 for d
+						  //  used to be{0.0008, 0.0002, 0.0000005}
+						  {0.000515, 0.001, 0.0000004}, // Distance controller gains [derivative make more wobble] [integral make it autocorrect to point faster]
+						  {0.0025, 0.000000000001, 0.0001},			  // Turn controller gains
+						  {0.0000, 0, 0.000000}			  // Angle controller gains (helps drive straight)
+						  ) 
+					  // can add rotation sensor and encoder heren
 					  .withSensors(
 						  leftEncoder,
 						  rightEncoder,
@@ -175,7 +172,7 @@ void odometryUpdate(void *ignore)
 	while (true)
 	{ // display odomDebug in inch and degree
 		auto odomState = driveTrain->getState();
-		modom.setData({odomState.x.convert(inch), odomState.y.convert(inch), odomState.theta.convert(degree)}, {leftEncoder->get(), rightEncoder->get(), middleEncoder->get()});
+		// modom.setData({odomState.x.convert(inch), odomState.y.convert(inch), odomState.theta.convert(degree)}, {leftEncoder->get(), rightEncoder->get(), middleEncoder->get()});
 
 		// refresh every second
 		pros::delay(1000);
@@ -218,9 +215,12 @@ void odometryUpdate(void *ignore)
  */
 void opcontrol()
 {
+	// Odom Debug
+	OdomDebug modom(lv_scr_act(), LV_COLOR_ORANGE);
+
 	modom.setResetCallback(resetSensors);
 
-	pros::Task odometryTask(odometryUpdate);
+	// pros::Task odometryTask(odometryUpdate);
 
 	leftEncoder->reset();
 	rightEncoder->reset();
@@ -228,17 +228,18 @@ void opcontrol()
 	driveTrain->setState({12_in, 108_in, 0_deg});
 
 	// start your oauton code here
-	pros::delay(10);
-
+	pros::delay(0);
+	
+	
 	driveTrain->driveToPoint({36_in, 108_in});
-	/*driveTrain->driveToPoint({36_in, 108_in});/*
 	driveTrain->turnToPoint({36_in, 0_in});
-	 driveTrain->driveToPoint({36_in, 120_in}, true);
+	 driveTrain->driveToPoint({36_in, 116_in}, true);
 	 mogoMech.set_value(false);
 	driveTrain->driveToPoint({36_in, 108_in});
+	//driveTrain->turnToPoint({72_in, 108_in});
 	driveTrain->driveToPoint({72_in, 108_in});
 	fourbarClamp.set_value(false);
-	driveTrain->driveToPoint({12_in, 108_in}, true);*/
+	
 
 	// sample of piston state set
 	// fourbarClamp.set_value(false);
@@ -259,6 +260,9 @@ void opcontrol()
 		// back tilt
 
 		// convey
+
+		auto odomState = driveTrain->getState();
+		modom.setData({odomState.x.convert(inch), odomState.y.convert(inch), odomState.theta.convert(degree)}, {leftEncoder->get(), rightEncoder->get(), middleEncoder->get()});
 
 		// 10ms delay for changes
 		pros::delay(10);
