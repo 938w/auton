@@ -231,15 +231,16 @@ void opcontrol()
 	pros::delay(0);
 	
 	
-	driveTrain->driveToPoint({36_in, 108_in});
-	driveTrain->turnToPoint({36_in, 0_in});
-	 driveTrain->driveToPoint({36_in, 116_in}, true);
+	driveTrain->driveToPoint({35_in, 108_in});
+	driveTrain->turnToPoint({34.5_in, 0_in});
+	 driveTrain->driveToPoint({36_in, 120.5_in}, true);
 	 mogoMech.set_value(false);
-	driveTrain->driveToPoint({36_in, 108_in});
+	 /*
+	driveTrain->driveToPoint({36_in, 100_in});
 	//driveTrain->turnToPoint({72_in, 108_in});
-	driveTrain->driveToPoint({72_in, 108_in});
+	driveTrain->driveToPoint({70_in, 108_in});
 	fourbarClamp.set_value(false);
-	
+	*/
 
 	// sample of piston state set
 	// fourbarClamp.set_value(false);
