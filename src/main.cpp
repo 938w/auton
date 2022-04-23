@@ -60,7 +60,8 @@ auto driveTrain = okapi::ChassisControllerBuilder()
 					  .withGains(
 						  //used to be 0.000715 for p
 						  // used to be 0.00000055 for d
-						  {0.00055, 0.00015, 0.00000055}, // Distance controller gains [derivative make more wobble] [integral make it autocorrect to point faster]
+						  // used to be{0.0008, 0.0002, 0.0000005}
+						  {0.001, 0.00015, 0.00000064}, // Distance controller gains [derivative make more wobble] [integral make it autocorrect to point faster]
 						  {0.0015, 0, 0.0001},	   // Turn controller gains
 						  {0.000, 0, 0.0000}	   // Angle controller gains (helps drive straight)
 						  )
